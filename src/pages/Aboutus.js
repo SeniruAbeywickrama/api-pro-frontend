@@ -1,4 +1,4 @@
-// src/pages/Home.js (or src/components/Home.js)
+// src/pages/AboutUs.js (or src/components/Home.js)
 
 import React, {useEffect, useState} from "react";
 

@@ -12,11 +12,26 @@ function Header() {
                 <div className="container mx-auto flex justify-end md:justify-end lg:justify-center">
                     {/* Desktop / Tablet Navigation */}
                     <nav className="hidden md:flex gap-20">
-                        <Link to="/" className="hover:underline">Home</Link>
-                        <Link to="/about" className="hover:underline">About Us</Link>
-                        <Link to="/pricing" className="hover:underline">Pricing</Link>
-                        <Link to="/docs" className="hover:underline">Documentation</Link>
-                        <Link to="/contact-us" className="hover:underline">Contact Us</Link>
+                        <Link to="/" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20">
+                            Home
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                        <Link to="/about" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20">
+                            About Us
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                        <Link to="/pricing" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20">
+                            Pricing
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                        <Link to="/docs" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20">
+                            Documentation
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                        <Link to="/contact-us" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20">
+                            Contact Us
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
                     </nav>
 
                     {/* Hamburger - visible only on mobile/tablet */}
@@ -46,11 +61,11 @@ function Header() {
                         >
                             ✕
                         </button>
-                        <Link to="/" onClick={() => setShowSideNav(false)}>HOME</Link>
-                        <Link to="/about" onClick={() => setShowSideNav(false)}>ABOUT US</Link>
-                        <Link to="/pricing" onClick={() => setShowSideNav(false)}>PRICING</Link>
-                        <Link to="/docs" onClick={() => setShowSideNav(false)}>DOCUMENTATION</Link>
-                        <Link to="/contact-us" onClick={() => setShowSideNav(false)}>CONTACT US</Link>
+                        <Link to="/" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20" onClick={() => setShowSideNav(false)}>HOME</Link>
+                        <Link to="/about" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20"  onClick={() => setShowSideNav(false)}>ABOUT US</Link>
+                        <Link to="/pricing" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20"  onClick={() => setShowSideNav(false)}>PRICING</Link>
+                        <Link to="/docs" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20"  onClick={() => setShowSideNav(false)}>DOCUMENTATION</Link>
+                        <Link to="/contact-us" className="relative text-white hover:text-gray-300 transition-all duration-200 group px-3 py-2 rounded-lg hover:bg-white/20"  onClick={() => setShowSideNav(false)}>CONTACT US</Link>
                     </div>
                 </>
             )}

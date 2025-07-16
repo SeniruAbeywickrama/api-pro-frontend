@@ -1,4 +1,4 @@
-// src/pages/Home.js (or src/components/Home.js)
+// src/pages/Pricing.js (or src/components/Home.js)
 
 import React from "react";
 
