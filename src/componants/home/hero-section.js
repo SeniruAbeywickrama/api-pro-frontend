@@ -13,7 +13,7 @@ function HeroSection() {
 
             {/* Content */}
             <div className="relative max-w-4xl mx-auto text-center z-10">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 opacity-80 hover:opacity-100 transition-all duration-500 ease-out hover:-translate-y-1 hover:text-[65px]">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 opacity-80 hover:opacity-100 transition-all duration-500 ease-out hover:-translate-y-1">
                     <span className="bg-gradient-to-r from-gray-800 via-violet-900 to-blue-900 bg-clip-text text-transparent">Effortless API Management.</span> Powerful Results.
                 </h1>
                 <p className="text-xl md:text-2xl mb-8">

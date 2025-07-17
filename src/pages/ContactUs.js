@@ -112,21 +112,23 @@ const useFormValidation = (initialState, validationRules) => {
 
 // Contact Info Component
 const ContactInfo = ({ icon: Icon, title, details, link }) => (
-  <div className="flex flex-col items-center lg:items-end text-center lg:text-right">
+  <div className="group flex flex-col items-center lg:items-end text-center lg:text-right bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 px-6 py-5 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
     <div className="flex items-center gap-4 justify-center lg:justify-end mb-2">
       <Icon size={25} className="text-blue-600" />
-      <h3 className="text-xl font-semibold">{title}</h3>
+      <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+        {title}
+      </h3>
     </div>
     {link ? (
       <a
         href={link}
-        className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+        className="text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"
         aria-label={`${title}: ${details}`}
       >
         {details}
       </a>
     ) : (
-      <p className="text-gray-600">{details}</p>
+      <p className="text-gray-600 font-medium">{details}</p>
     )}
   </div>
 );
@@ -249,123 +251,129 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="pt-24 bg-slate-50 min-h-screen px-6">
-      {/* Header Section */}
-      <section className="text-center max-w-3xl mx-auto mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-          Get In Touch
-        </h1>
-        <p className="text-lg text-gray-600 leading-relaxed">
-          Have a technical question, a sales inquiry, or just want to chat? 
-          We'd love to hear from you.
-        </p>
-      </section>
+    <div className="pt-24 px-6 min-h-screen bg-gradient-to-br from-violet-100 via-blue-50 to-indigo-50 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-gradient-to-r from-violet-600/5 to-blue-600/5"></div>
+      <div className="absolute top-0 left-1/4 w-72 h-72 bg-violet-400/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
+      <div className="relative z-10">
+        {/* Header Section */}
+        <section className="text-center max-w-3xl mx-auto mb-12">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+            Get In Touch
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            Have a technical question, a sales inquiry, or just want to chat? 
+            We'd love to hear from you.
+          </p>
+        </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-        {/* Contact Form */}
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
-            Send us a message
-          </h2>
-          
-          {submitStatus === 'success' && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-              <FaCheckCircle className="text-green-600" size={20} />
-              <p className="text-green-800 font-medium">
-                Thank you! Your message has been sent successfully.
-              </p>
-            </div>
-          )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Contact Form */}
+          <div className="bg-white/80 backdrop-blur-sm p-10 rounded-2xl shadow-lg border border-white/20">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-900 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+              Send us a message
+            </h2>
+            
+            {submitStatus === 'success' && (
+              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+                <FaCheckCircle className="text-green-600" size={20} />
+                <p className="text-green-800 font-medium">
+                  Thank you! Your message has been sent successfully.
+                </p>
+              </div>
+            )}
 
-          {submitStatus === 'error' && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-              <FaExclamationCircle className="text-red-600" size={20} />
-              <p className="text-red-800 font-medium">
-                Sorry, something went wrong. Please try again.
-              </p>
-            </div>
-          )}
+            {submitStatus === 'error' && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+                <FaExclamationCircle className="text-red-600" size={20} />
+                <p className="text-red-800 font-medium">
+                  Sorry, something went wrong. Please try again.
+                </p>
+              </div>
+            )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <FormField
-              label="Full Name"
-              name="fullName"
-              placeholder="Your full name"
-              required
-              value={formData.fullName}
-              error={errors.fullName}
-              touched={touched.fullName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <FormField
+                label="Full Name"
+                name="fullName"
+                placeholder="Your full name"
+                required
+                value={formData.fullName}
+                error={errors.fullName}
+                touched={touched.fullName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            <FormField
-              label="Work Email"
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-              value={formData.email}
-              error={errors.email}
-              touched={touched.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <FormField
+                label="Work Email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                value={formData.email}
+                error={errors.email}
+                touched={touched.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            <FormField
-              label="Company Name"
-              name="company"
-              placeholder="Your company (optional)"
-              value={formData.company}
-              error={errors.company}
-              touched={touched.company}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <FormField
+                label="Company Name"
+                name="company"
+                placeholder="Your company (optional)"
+                value={formData.company}
+                error={errors.company}
+                touched={touched.company}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            <FormField
-              label="Message"
-              name="message"
-              type="textarea"
-              placeholder="Tell us about your project or question..."
-              required
-              value={formData.message}
-              error={errors.message}
-              touched={touched.message}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <FormField
+                label="Message"
+                name="message"
+                type="textarea"
+                placeholder="Tell us about your project or question..."
+                required
+                value={formData.message}
+                error={errors.message}
+                touched={touched.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                isSubmitting
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg transform hover:-translate-y-0.5'
-              }`}
-            >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Sending...
-                </>
-              ) : (
-                'Send Message'
-              )}
-            </button>
-          </form>
-        </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                  isSubmitting
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg transform hover:-translate-y-0.5'
+                }`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Sending...
+                  </>
+                ) : (
+                  'Send Message'
+                )}
+              </button>
+            </form>
+          </div>
 
-        {/* Contact Details */}
-        <div className="flex flex-col justify-center space-y-8">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 text-center lg:text-right">
-            Contact Information
-          </h2>
-          
-          {Object.entries(CONTACT_INFO).map(([key, info]) => (
-            <ContactInfo key={key} {...info} />
-          ))}
+          {/* Contact Details */}
+          <div className="flex flex-col justify-center space-y-8">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-900 text-center lg:text-right bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+              Contact Information
+            </h2>
+            
+            {Object.entries(CONTACT_INFO).map(([key, info]) => (
+              <ContactInfo key={key} {...info} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

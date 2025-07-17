@@ -8,7 +8,7 @@ function Header() {
     return (
         <>
             {/* Top Header */}
-            <header className="bg-black text-white p-6 fixed top-0 left-0 right-0 shadow-md z-50">
+            <header className="bg-gradient-to-r from-stone-950 via-violet-950 shadow-xl to-stone-900 text-white p-6 fixed top-0 left-0 right-0 shadow-md z-50">
                 <div className="container mx-auto flex justify-end md:justify-end lg:justify-center">
                     {/* Desktop / Tablet Navigation */}
                     <nav className="hidden md:flex gap-20">
