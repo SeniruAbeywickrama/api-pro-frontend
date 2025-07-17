@@ -1,105 +1,375 @@
-// src/pages/Home.js (or src/components/ContactUs.js)
-import { HiHomeModern } from "react-icons/hi2";
-import { MdEmail } from "react-icons/md";
-import { BiSolidPhoneCall } from "react-icons/bi";
+import React, { useState } from 'react';
+import { HiHomeModern } from 'react-icons/hi2';
+import { MdEmail } from 'react-icons/md';
+import { BiSolidPhoneCall } from 'react-icons/bi';
+import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 
-import React from "react";
+// Contact information constants
+const CONTACT_INFO = {
+  office: {
+    icon: HiHomeModern,
+    title: 'Our Office',
+    details: '123 Tech Avenue, Innovation City, Connectiville 45678',
+  },
+  email: {
+    icon: MdEmail,
+    title: 'Email Us',
+    details: 'hello@apipro.com',
+    link: 'mailto:hello@apipro.com',
+  },
+  phone: {
+    icon: BiSolidPhoneCall,
+    title: 'Call Us',
+    details: '+1 (555) 123-4567',
+    link: 'tel:+15551234567',
+  },
+};
 
-function ContactUs() {
-    return (
-        <div className="pt-24 bg-slate-50 min-h-screen">
-            {/* Title & Subheading */}
-            <section className="text-center max-w-3xl mx-auto mb-12">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h1>
-                <p className="text-lg text-gray-600">
-                    Have a technical question, a sales inquiry, or just want to chat? We'd love to hear from you.
-                </p>
-            </section>
+// Form validation rules
+const VALIDATION_RULES = {
+  fullName: {
+    required: true,
+    minLength: 2,
+    maxLength: 50,
+  },
+  email: {
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  },
+  company: {
+    maxLength: 100,
+  },
+  message: {
+    required: true,
+    minLength: 10,
+    maxLength: 1000,
+  },
+};
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                {/* Contact Form */}
-                <form className="bg-gray-100 p-8 rounded-lg shadow space-y-6">
-                    <div>
-                        <label className="block text-gray-700 font-medium mb-1">Full Name</label>
-                        <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Your Name"
-                            required
-                        />
-                    </div>
+// Custom hook for form validation
+const useFormValidation = (initialState, validationRules) => {
+  const [formData, setFormData] = useState(initialState);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
-                    <div>
-                        <label className="block text-gray-700 font-medium mb-1">Work Email</label>
-                        <input
-                            type="email"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="you@example.com"
-                            required
-                        />
-                    </div>
+  const validateField = (name, value) => {
+    const rules = validationRules[name];
+    if (!rules) return '';
 
-                    <div>
-                        <label className="block text-gray-700 font-medium mb-1">Company Name <span className="text-gray-400">(Optional)</span></label>
-                        <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Your Company"
-                        />
-                    </div>
+    if (rules.required && !value.trim()) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+    }
 
-                    <div>
-                        <label className="block text-gray-700 font-medium mb-1">Message</label>
-                        <textarea
-                            className="w-full border border-gray-300 rounded px-4 py-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Write your message here..."
-                            required
-                        />
-                    </div>
+    if (rules.minLength && value.length < rules.minLength) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.minLength} characters`;
+    }
 
-                    <button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full transition duration-300"
-                    >
-                        Send Message
-                    </button>
-                </form>
+    if (rules.maxLength && value.length > rules.maxLength) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than ${rules.maxLength} characters`;
+    }
 
-                {/* Contact Details */}
-                <div className="flex flex-col justify-center items-center lg:items-end text-center lg:text-right space-y-8">
-                    {/* Office */}
-                    <div>
-                        <div className="flex items-center gap-4 justify-center lg:justify-end">
-                            <HiHomeModern size={25} />
-                            <h3 className="text-xl font-semibold">Our Office</h3>
-                        </div>
-                        <p className="text-gray-600 mt-2">
-                            123 Tech Avenue, Innovation City,<br />
-                            Connectiville 45678
-                        </p>
-                    </div>
+    if (rules.pattern && !rules.pattern.test(value)) {
+      return `Please enter a valid ${name}`;
+    }
 
-                    {/* Email */}
-                    <div>
-                        <div className="flex items-center gap-4 justify-center lg:justify-end">
-                            <MdEmail size={25} />
-                            <h3 className="text-xl font-semibold">Email Us</h3>
-                        </div>
-                        <p className="text-blue-600 mt-2">hello@apipro.com</p>
-                    </div>
+    return '';
+  };
 
-                    {/* Phone */}
-                    <div>
-                        <div className="flex items-center gap-4 justify-center lg:justify-end">
-                            <BiSolidPhoneCall size={25} />
-                            <h3 className="text-xl font-semibold">Call Us</h3>
-                        </div>
-                        <p className="text-gray-700 mt-2">+1 (555) 123-4567</p>
-                    </div>
-                </div>
+  const handleChange = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (touched[name]) {
+      const error = validateField(name, value);
+      setErrors(prev => ({ ...prev, [name]: error }));
+    }
+  };
+
+  const handleBlur = (name) => {
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const error = validateField(name, formData[name]);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    Object.keys(validationRules).forEach(field => {
+      const error = validateField(field, formData[field]);
+      if (error) newErrors[field] = error;
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  return {
+    formData,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    validateForm,
+  };
+};
+
+// Contact Info Component
+const ContactInfo = ({ icon: Icon, title, details, link }) => (
+  <div className="flex flex-col items-center lg:items-end text-center lg:text-right">
+    <div className="flex items-center gap-4 justify-center lg:justify-end mb-2">
+      <Icon size={25} className="text-blue-600" />
+      <h3 className="text-xl font-semibold">{title}</h3>
+    </div>
+    {link ? (
+      <a
+        href={link}
+        className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+        aria-label={`${title}: ${details}`}
+      >
+        {details}
+      </a>
+    ) : (
+      <p className="text-gray-600">{details}</p>
+    )}
+  </div>
+);
+
+// Form Field Component
+const FormField = ({ 
+  label, 
+  name, 
+  type = 'text', 
+  placeholder, 
+  required = false, 
+  value, 
+  error, 
+  touched, 
+  onChange, 
+  onBlur,
+  ...props 
+}) => (
+  <div className="space-y-2">
+    <label htmlFor={name} className="block text-gray-700 font-medium">
+      {label}
+      {required && <span className="text-red-500 ml-1">*</span>}
+    </label>
+    {type === 'textarea' ? (
+      <textarea
+        id={name}
+        name={name}
+        value={value}
+        onChange={(e) => onChange(name, e.target.value)}
+        onBlur={() => onBlur(name)}
+        placeholder={placeholder}
+        className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-200 resize-none ${
+          error && touched
+            ? 'border-red-500 focus:ring-red-500'
+            : 'border-gray-300 focus:ring-blue-500'
+        }`}
+        rows={4}
+        {...props}
+      />
+    ) : (
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(name, e.target.value)}
+        onBlur={() => onBlur(name)}
+        placeholder={placeholder}
+        className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-200 ${
+          error && touched
+            ? 'border-red-500 focus:ring-red-500'
+            : 'border-gray-300 focus:ring-blue-500'
+        }`}
+        {...props}
+      />
+    )}
+    {error && touched && (
+      <p className="text-red-500 text-sm flex items-center gap-1">
+        <FaExclamationCircle size={12} />
+        {error}
+      </p>
+    )}
+  </div>
+);
+
+// Main ContactUs Component
+const ContactUs = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const {
+    formData,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    validateForm,
+  } = useFormValidation(
+    {
+      fullName: '',
+      email: '',
+      company: '',
+      message: '',
+    },
+    VALIDATION_RULES
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Here you would typically send the data to your backend
+      console.log('Form submitted:', formData);
+      
+      setSubmitStatus('success');
+      // Reset form after successful submission
+      setTimeout(() => {
+        setSubmitStatus(null);
+        // Reset form data
+        Object.keys(formData).forEach(key => {
+          handleChange(key, '');
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="pt-24 bg-slate-50 min-h-screen px-6">
+      {/* Header Section */}
+      <section className="text-center max-w-3xl mx-auto mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+          Get In Touch
+        </h1>
+        <p className="text-lg text-gray-600 leading-relaxed">
+          Have a technical question, a sales inquiry, or just want to chat? 
+          We'd love to hear from you.
+        </p>
+      </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        {/* Contact Form */}
+        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
+            Send us a message
+          </h2>
+          
+          {submitStatus === 'success' && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+              <FaCheckCircle className="text-green-600" size={20} />
+              <p className="text-green-800 font-medium">
+                Thank you! Your message has been sent successfully.
+              </p>
             </div>
+          )}
+
+          {submitStatus === 'error' && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+              <FaExclamationCircle className="text-red-600" size={20} />
+              <p className="text-red-800 font-medium">
+                Sorry, something went wrong. Please try again.
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <FormField
+              label="Full Name"
+              name="fullName"
+              placeholder="Your full name"
+              required
+              value={formData.fullName}
+              error={errors.fullName}
+              touched={touched.fullName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+
+            <FormField
+              label="Work Email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+              value={formData.email}
+              error={errors.email}
+              touched={touched.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+
+            <FormField
+              label="Company Name"
+              name="company"
+              placeholder="Your company (optional)"
+              value={formData.company}
+              error={errors.company}
+              touched={touched.company}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+
+            <FormField
+              label="Message"
+              name="message"
+              type="textarea"
+              placeholder="Tell us about your project or question..."
+              required
+              value={formData.message}
+              error={errors.message}
+              touched={touched.message}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg transform hover:-translate-y-0.5'
+              }`}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  Sending...
+                </>
+              ) : (
+                'Send Message'
+              )}
+            </button>
+          </form>
         </div>
-    );
-}
+
+        {/* Contact Details */}
+        <div className="flex flex-col justify-center space-y-8">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 text-center lg:text-right">
+            Contact Information
+          </h2>
+          
+          {Object.entries(CONTACT_INFO).map(([key, info]) => (
+            <ContactInfo key={key} {...info} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ContactUs;

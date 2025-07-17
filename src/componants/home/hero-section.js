@@ -13,8 +13,8 @@ function HeroSection() {
 
             {/* Content */}
             <div className="relative max-w-4xl mx-auto text-center z-10">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                    <span className="text-violet-700">Effortless API Management.</span> Powerful Results.
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 opacity-80 hover:opacity-100 transition-all duration-500 ease-out hover:-translate-y-1 hover:text-[65px]">
+                    <span className="bg-gradient-to-r from-gray-800 via-violet-900 to-blue-900 bg-clip-text text-transparent">Effortless API Management.</span> Powerful Results.
                 </h1>
                 <p className="text-xl md:text-2xl mb-8">
                     API PRO is the all-in-one platform designed to take your APIs from development to production with unparalleled speed, security, and AI-driven insights.
