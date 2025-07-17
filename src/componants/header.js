@@ -54,7 +54,7 @@ function Header() {
                     />
 
                     {/* Side Drawer */}
-                    <div className="fixed top-0 right-0 bottom-0 w-80 bg-black text-white z-50 p-6 flex flex-col gap-6 shadow-lg">
+                    <div className="fixed bg-gradient-to-r from-stone-950 via-violet-950  top-0 right-0 bottom-0 w-80 bg-black text-white z-50 p-6 flex flex-col gap-6 shadow-lg">
                         <button
                             className="self-end text-white text-2xl"
                             onClick={() => setShowSideNav(false)}
