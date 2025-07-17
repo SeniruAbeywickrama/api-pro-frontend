@@ -3,6 +3,9 @@ import { HiHomeModern } from 'react-icons/hi2';
 import { MdEmail } from 'react-icons/md';
 import { BiSolidPhoneCall } from 'react-icons/bi';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import useFormValidation from "../componants/contactUs/form-validation";
+import FormField from "../componants/contactUs/form-field";
+import ContactInfo from "../componants/contactUs/contact-info";
 
 // Contact information constants
 const CONTACT_INFO = {
@@ -46,167 +49,12 @@ const VALIDATION_RULES = {
   },
 };
 
-// Custom hook for form validation
-const useFormValidation = (initialState, validationRules) => {
-  const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-
-  const validateField = (name, value) => {
-    const rules = validationRules[name];
-    if (!rules) return '';
-
-    if (rules.required && !value.trim()) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
-    }
-
-    if (rules.minLength && value.length < rules.minLength) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.minLength} characters`;
-    }
-
-    if (rules.maxLength && value.length > rules.maxLength) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than ${rules.maxLength} characters`;
-    }
-
-    if (rules.pattern && !rules.pattern.test(value)) {
-      return `Please enter a valid ${name}`;
-    }
-
-    return '';
-  };
-
-  const handleChange = (name, value) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    if (touched[name]) {
-      const error = validateField(name, value);
-      setErrors(prev => ({ ...prev, [name]: error }));
-    }
-  };
-
-  const handleBlur = (name) => {
-    setTouched(prev => ({ ...prev, [name]: true }));
-    const error = validateField(name, formData[name]);
-    setErrors(prev => ({ ...prev, [name]: error }));
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    Object.keys(validationRules).forEach(field => {
-      const error = validateField(field, formData[field]);
-      if (error) newErrors[field] = error;
-    });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  return {
-    formData,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    validateForm,
-  };
-};
-
-// Contact Info Component
-const ContactInfo = ({ icon: Icon, title, details, link }) => (
-  <div className="group flex flex-col items-center lg:items-end text-center lg:text-right bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 px-6 py-5 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-    <div className="flex items-center gap-4 justify-center lg:justify-end mb-2">
-      <Icon size={25} className="text-blue-600" />
-      <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
-        {title}
-      </h3>
-    </div>
-    {link ? (
-      <a
-        href={link}
-        className="text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"
-        aria-label={`${title}: ${details}`}
-      >
-        {details}
-      </a>
-    ) : (
-      <p className="text-gray-600 font-medium">{details}</p>
-    )}
-  </div>
-);
-
-// Form Field Component
-const FormField = ({ 
-  label, 
-  name, 
-  type = 'text', 
-  placeholder, 
-  required = false, 
-  value, 
-  error, 
-  touched, 
-  onChange, 
-  onBlur,
-  ...props 
-}) => (
-  <div className="space-y-2">
-    <label htmlFor={name} className="block text-gray-700 font-medium">
-      {label}
-      {required && <span className="text-red-500 ml-1">*</span>}
-    </label>
-    {type === 'textarea' ? (
-      <textarea
-        id={name}
-        name={name}
-        value={value}
-        onChange={(e) => onChange(name, e.target.value)}
-        onBlur={() => onBlur(name)}
-        placeholder={placeholder}
-        className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-200 resize-none ${
-          error && touched
-            ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:ring-blue-500'
-        }`}
-        rows={4}
-        {...props}
-      />
-    ) : (
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={value}
-        onChange={(e) => onChange(name, e.target.value)}
-        onBlur={() => onBlur(name)}
-        placeholder={placeholder}
-        className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-200 ${
-          error && touched
-            ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:ring-blue-500'
-        }`}
-        {...props}
-      />
-    )}
-    {error && touched && (
-      <p className="text-red-500 text-sm flex items-center gap-1">
-        <FaExclamationCircle size={12} />
-        {error}
-      </p>
-    )}
-  </div>
-);
-
 // Main ContactUs Component
 const ContactUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const {
-    formData,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    validateForm,
-  } = useFormValidation(
+  const {formData, errors, touched, handleChange, handleBlur, validateForm,} = useFormValidation(
     {
       fullName: '',
       email: '',
@@ -252,10 +100,6 @@ const ContactUs = () => {
 
   return (
     <div className="pt-24 px-6 min-h-screen bg-gradient-to-br from-violet-100 via-blue-50 to-indigo-50 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-violet-600/5 to-blue-600/5"></div>
-      <div className="absolute top-0 left-1/4 w-72 h-72 bg-violet-400/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
       <div className="relative z-10">
         {/* Header Section */}
         <section className="text-center max-w-3xl mx-auto mb-12">
